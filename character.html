@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>캐릭터 소개</title>
+    <style>
+        @font-face {
+            font-family: 'Ownglyph_meetme-Rg';
+            src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2402_1@1.0/Ownglyph_meetme-Rg.woff2') format('woff2');
+            font-weight: normal;
+            font-style: normal;
+        }
+        body {
+            background-color: black;
+            color: white;
+            display: flex;
+            justify-content: center; 
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: 'Ownglyph_meetme-Rg', Arial, sans-serif; 
+            position: relative;
+        }
+        .character {
+            text-align: center;
+            width: 250px; 
+            margin: 0 50px; 
+        }
+        h2 {
+            font-size: 2.5em; 
+            margin: 0; 
+        }
+        p {
+            font-size: 1.2em; 
+            margin: 0; 
+        }
+        img {
+            width: 100%; 
+            max-width: 250px; 
+            height: auto;
+        }
+        .back-arrow {
+            position: absolute; 
+            top: 20px; 
+            left: 20px; 
+            font-size: 2em; 
+            color: white; 
+            text-decoration: none; 
+        }
+        .button {
+            position: absolute;
+            display: inline-block; 
+            background-color: #f2e56e; 
+            color: black; 
+            font-family: 'Ownglyph_meetme-Rg'; 
+            font-size: 2em; 
+            padding: 15px 30px; 
+            border: none; 
+            border-radius: 15px; 
+            text-decoration: none; 
+            margin-top: 50px; 
+            
+            top:80%;
+        }
+        @media (max-width: 1200px) {
+            .character {
+                margin: 20px;
+            }
+            h2 {
+                font-size: 2em;
+            }
+            p {
+                font-size: 1.1em;
+            }
+            .button {
+                font-size: 1.8em;
+                padding: 12px 25px;
+                top: 75%;
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 20px;
+            }
+            .character {
+                margin: 20px 0;
+                width: 200px;
+            }
+            h2 {
+                font-size: 1.8em;
+            }
+            p {
+                font-size: 1.1em;
+            }
+            .button {
+                font-size: 1.6em;
+                padding: 10px 20px;
+                top: 70%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .character {
+                width: 180px;
+                margin: 10px;
+            }
+            h2 {
+                font-size: 1.5em;
+            }
+            p {
+                font-size: 1em;
+            }
+            .button {
+                font-size: 1.4em;
+                padding: 8px 15px;
+                top: 65%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a class="back-arrow" href="index.html">&#8592;</a> 
+    <div class="character">
+        <h2>환</h2>
+        <img src="drawing/T1.png" onmouseover="this.src='drawing/T2.png'" onmouseout="this.src='drawing/T1.png'" alt="캐릭터 1">
+        <p>꿈을 가진 자</p>
+    </div>
+    <div class="character">
+        <h2>토끼</h2>
+        <img src="drawing/R1.png" onmouseover="this.src='drawing/R2.png'" onmouseout="this.src='drawing/R1.png'" alt="캐릭터 2">
+        <p>몽환의 요정</p>
+    </div>
+    <a class="button" href="first.html">나아가 볼까?</a> 
+</body>
+</html>
+
+
+

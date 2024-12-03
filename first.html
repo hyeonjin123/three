@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>first</title>
+    <style>
+        
+        @font-face {
+            font-family: 'Ownglyph_meetme-Rg';
+            src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2402_1@1.0/Ownglyph_meetme-Rg.woff2') format('woff2');   
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body, html {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #000;
+            overflow: hidden;
+            font-family: 'Ownglyph_meetme-Rg', sans-serif;
+        }
+        .container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 2.5em;
+            color: white;
+            cursor: pointer;
+            user-select: none;
+        }
+        .left-arrow { left: 30px; }
+        .right-arrow { right: 30px; }
+        .home-arrow {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-size: 2em;
+            color: white;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        .caption {
+            position: absolute;
+            bottom: 70px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 70%;
+            min-height: 100px;
+            background-color: rgba(245, 245, 245, 0.9);
+            color: #333;
+            text-align: center;
+            font-size: 40px;
+            padding: 40px;
+            border-radius: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Ownglyph_meetme-Rg', sans-serif;
+            white-space: pre-line; 
+        }
+        .sound-icon {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 2em;
+            color: white;
+            cursor: pointer;
+            user-select: none;
+        }
+        @media (max-width: 768px) {
+            .arrow {
+                font-size: 1.8em;
+            }
+            .caption {
+                font-size: 24px;
+                padding: 20px;
+                width: 85%;
+            }
+            .home-arrow {
+                font-size: 1.2em;
+            }
+            .sound-icon {
+                font-size: 1.2em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .arrow {
+                font-size: 1.5em;
+            }
+            .caption {
+                font-size: 20px;
+                padding: 15px;
+                width: 90%;
+            }
+            .home-arrow {
+                font-size: 1em;
+            }
+            .sound-icon {
+                font-size: 1em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="index.html" class="home-arrow">←</a>
+        <img id="slide" src="drawing/1.jpg" alt="슬라이드 이미지">
+        <div class="arrow left-arrow" onclick="prevSlide()">&#10094;</div>
+        <div class="arrow right-arrow" onclick="nextSlide()">&#10095;</div>
+        <div class="caption" id="caption">너는 꿈이 뭐야?</div>
+        <div class="sound-icon" onclick="toggleSound()">🔇</div>
+    </div>
+
+    <audio id="rain" src="sound/rain.mp3"></audio>
+    <audio id="crickets" src="sound/귀뚜라미.mp3"></audio>
+    <audio id="music" src="sound/music.mp3"></audio> 
+    <audio id="music2" src="sound/music2.mp3"></audio> 
+    
+
+    <script>
+        let currentSlide = 1; 
+        const totalSlides = 86; 
+
+        const captions = {
+            1: { text: "너는 꿈이 뭐야?", color:"rgba(255, 255, 204, 0.9)" },
+            2: { text: "어라 내 꿈은 뭐였지..", color: "rgba(245, 245, 245, 0.9)" },
+            3: { text: "그때 기억나? 우리 즐거웠잖아", color: "rgba(255, 255, 204, 0.9)" },
+            4: { text: "그때..?", color: "rgba(245, 245, 245, 0.9)" },
+            5: { text: "지금은 어때?", color: "rgba(255, 255, 204, 0.9)" },
+            6: { text: "지금은 잘 모르겠어", color: "rgba(245, 245, 245, 0.9)" },
+            7: { text: "그럼 그때의 기억을 다시 떠올려 봐", color: "rgba(255, 255, 204, 0.9)" },
+            8: { text:"지금 상황이 나아질지도 몰라", color: "rgba(255, 255, 204, 0.9)" },
+            9: { text:"제1장. Drefuge", color: "rgba(245, 245, 245, 0.9)" },
+            10: { text: "타닥..타닥..", color: "rgba(245, 245, 245, 0.9)" },
+            11: { text: "일..일..언제쯤 여기서 벗어날 수 있지..?" , color: "rgba(245, 245, 245, 0.9)" },
+            12: { text:"비가 오잖아..?" , color: "rgba(245, 245, 245, 0.9)" },
+            17: { text:"여긴 어디지..?", color: "rgba(245, 245, 245, 0.9)" },
+            18: { text:"뭔가 익숙한 기분이 들어.", color: "rgba(245, 245, 245, 0.9)" },
+            21: { text:"넌 누구야..?", color: "rgba(245, 245, 245, 0.9)" },
+            23: { text:"...", color: "rgba(245, 245, 245, 0.9)" },
+            24: { text:"?..", color: "rgba(245, 245, 245, 0.9)" },
+            25: { text:"왜 나를 따라오는 거야?", color: "rgba(245, 245, 245, 0.9)" },
+            26: { text:"난 몽환의 요정이야. 너에게 몽환의 즐거움을 느끼게 해주고 싶어.", color: "rgba(255, 255, 204, 0.9)" },
+            27: { text:"몽환의 즐거움..?", color: "rgba(245, 245, 245, 0.9)" },
+            28: { text:"미안하지만, 난 현실을 살아야 해. 다음날 회사도 나가야 하거든.", color: "rgba(245, 245, 245, 0.9)" },
+            29: { text:"그건 걱정마. 현실에서 멀어지지 않아. 잠시 꿈을 꾸게 될거야.  ", color: "rgba(255, 255, 204, 0.9)" },
+            30: { text:"한번 해보지 않을래? 이번 경험이 널 똑같은 일상에서 벗어날 수 있게 해줄지 몰라.", color: "rgba(255, 255, 204, 0.9)" },
+            31: { text:"제2장. 꿈은 현실과 멀지 않은 곳에 있다.", color: "rgba(245, 245, 245, 0.9)" },
+            32: { text:"(토끼의 말에 어느새 혹해 버렸어...괜찮을까?)", color: "rgba(245, 245, 245, 0.9)" },
+            33: { text:"자! 여기야! 이 가게에서 여행의 필요한 마음을 챙겨가자.", color: "rgba(255, 255, 204, 0.9)" },
+            34: { text:"우와.. 여긴 어디지..?", color: "rgba(245, 245, 245, 0.9)" },
+            35: { text:"여기는 다양한 꿈들이 담겨있는 곳이야.", color: "rgba(255, 255, 204, 0.9)" },
+            36: { text:"다람쥐 요원들이 관리하고 있지.", color: "rgba(255, 255, 204, 0.9)" },
+            37: { text:"자! 여행의 필요한 마음이야. 챙겨서 출발해 볼까?", color: "rgba(255, 255, 204, 0.9)" },
+            38: { text:"또 비가 오잖아..? 우산 펼칠까..?", color: "rgba(245, 245, 245, 0.9)" },
+            39: { text:"우산 없이도 충분히 나아갈 수 있을 것 같아.", color: "rgba(255, 255, 204, 0.9)" },
+            40: { text:"자 나와 한 발 한 발 천천히 나아가 볼까.", color: "rgba(255, 255, 204, 0.9)" },
+            41: { text:"비 맞으면 차갑겠지..?", color: "rgba(245, 245, 245, 0.9)" },
+            42: { text:"저 어두운 길을 지나가라고..?", color: "rgba(245, 245, 245, 0.9)" },
+            43: { text:"손잡아줄게 한번 천천히 가보자.", color: "rgba(255, 255, 204, 0.9)" },
+            44: { text:"...", color: "rgba(245, 245, 245, 0.9)" },
+            47: { text:"어때? 나쁘지 않지? ", color: "rgba(255, 255, 204, 0.9)" },
+            48: { text:"웅 생각했던 것보다 나쁘지 않은 것 같아.", color: "rgba(245, 245, 245, 0.9)" },
+            49: { text:"기다려봐 내가 도와줄게.", color: "rgba(255, 255, 204, 0.9)" },
+            50: { text:"우와.. 따뜻해졌어.", color: "rgba(245, 245, 245, 0.9)" },
+            51: { text:"잠시 기다려.", color: "rgba(255, 255, 204, 0.9)" },
+            52: { text:"와..얼마만에 보는 바다이지..?", color: "rgba(245, 245, 245, 0.9)" },
+            53: { text:"먹구름 때문에 바다가 탁해 보여. ", color: "rgba(245, 245, 245, 0.9)" },
+            54: { text:"여기야 여기!!", color: "rgba(255, 255, 204, 0.9)" },
+            55: { text:"우와..우리 주변으로 바다가 밝아지고 있어.", color: "rgba(245, 245, 245, 0.9)" },
+            56: { text:"정말 이쁘다. 그래 원래 내가 알던 바다는 이런 색감이었지.", color: "rgba(245, 245, 245, 0.9)" },
+            57: { text:"다시는 잊고 싶지 않아. 이 아름다운 색깔들을.", color: "rgba(245, 245, 245, 0.9)" },
+            58: { text:"안녕 다음에 또 보자. 바다야. ", color: "rgba(245, 245, 245, 0.9)" },
+            59: { text:"자 이제 내리자.", color: "rgba(255, 255, 204, 0.9)" },
+            60: { text:"이제는 구름을 타고 이동할 거야!", color: "rgba(255, 255, 204, 0.9)" },
+            61: { text:"(과연 뜰까..?)", color: "rgba(245, 245, 245, 0.9)" },
+            62: { text:"의심하지 않아도 돼. 우리가 이 구름을 믿는다면 절대 무너지지 않을 거야.", color: "rgba(255, 255, 204, 0.9)" },
+            63: { text:"한 사람의 믿음이 큰 에너지가 되거든.", color: "rgba(255, 255, 204, 0.9)" },
+            64: { text:"자! 가자!", color: "rgba(255, 255, 204, 0.9)" },
+            65: { text:"(믿음이 있다면..못할 건 없구나.)", color: "rgba(245, 245, 245, 0.9)" },
+            68: { text:"도착했으니 좀 쉬어갈까?", color: "rgba(255, 255, 204, 0.9)" },
+            69: { text:"눈을 감고 소리에 귀 기울여봐. ", color: "rgba(255, 255, 204, 0.9)" },
+            73: { text:"고마워. 이렇게 아름다운 선물을 준비해 줘서.. 잠시 잊고 있었어. 소중한 시간을", color: "rgba(245, 245, 245, 0.9)" },
+            74: { text:"고맙긴 나야말로. 이제 거의 다 도착했어. ", color: "rgba(255, 255, 204, 0.9)" },
+            75: { text:"제3장, Dream", color: "rgba(245, 245, 245, 0.9)" },
+            76: { text:"너가 소개하고 싶은 곳이 여기였구나.", color: "rgba(245, 245, 245, 0.9)" },
+            78: { text:"정말 환상적이야.", color: "rgba(245, 245, 245, 0.9)" },
+            80: { text:"네가 그동안 꿈꿔왔던 꿈을 잊지 않고 떠올려줬으면 했어.", color: "rgba(255, 255, 204, 0.9)" },
+            81: { text:"내가 잊고 있던 꿈..?", color: "rgba(245, 245, 245, 0.9)" },
+            82: { text:"맞아. 네가 겁나고, 무섭고, 어려워서 접어놓았던 꿈들이 얼마나 아름답고, 강한 꿈이었는지 보여주고 싶었어.  ", color: "rgba(255, 255, 204, 0.9)" },
+            83: { text:"내 꿈을 소중히 기억해 주었구나. 하루 종일 너와 다니면서 더 이상 꿈이 두렵지 않게 되었어.", color: "rgba(245, 245, 245, 0.9)" },
+            84: { text:"지금도 충분히 잘하고 있고, 앞으로도 지금처럼 충분히 잘 해낼 거야. 우리 그럼 나중에 또 보자.  ", color: "rgba(255, 255, 204, 0.9)" },
+            85: { text:"그래 안녕 Drefuge.", color: "rgba(245, 245, 245, 0.9)" },
+            86: { text:"The end", color: "rgba(245, 245, 245, 0.9)" },
+
+        };
+ 
+           
+       
+
+        const rain = document.getElementById("rain");
+        const crickets = document.getElementById("crickets");
+        const soundIcon = document.querySelector(".sound-icon");
+         const music = document.getElementById("music");
+        const music2 = document.getElementById("music2");
+
+        let isSoundOn = localStorage.getItem('soundOn') === 'true'; 
+
+        rain.volume = 0.2; 
+        crickets.volume = 0.2; 
+
+        function toggleSound() {
+            isSoundOn = !isSoundOn;
+            localStorage.setItem('soundOn', isSoundOn); 
+
+            if (isSoundOn) {
+                soundIcon.textContent = "🔊";
+                playSounds();
+            } else {
+                soundIcon.textContent = "🔇";
+                pauseSounds();
+            }
+        }
+
+        function playSounds() {
+            if (currentSlide >= 38 && currentSlide <= 45) {
+                rain.volume = 0.2;  
+                rain.play();
+            } else if (currentSlide === 46) {
+                rain.volume = 0.5;  
+                rain.play();
+            } else if (currentSlide === 49) {
+                rain.pause();
+            }
+
+            if (currentSlide >= 68 && currentSlide <= 70) {
+                crickets.volume = 0.2; 
+                crickets.play();
+            } else if (currentSlide === 71) {
+                crickets.volume = 1.0;  
+                crickets.play();
+            } else if (currentSlide >= 73 && currentSlide < 75) {
+                crickets.volume = 0.1;  
+            } else if (currentSlide === 75) {
+                crickets.pause();  
+            }
+            if ((currentSlide >= 1 && currentSlide <= 22) || (currentSlide >= 76 && currentSlide <= 86)) {
+                music.volume = 0.3;
+                if (music.paused) {
+                    music.play();
+                }
+            } else {
+                music.pause();
+            }
+
+            if ((currentSlide >= 25 && currentSlide <= 74)) {
+                music2.volume = 0.3;
+                if (music2.paused) {
+                    music2.play();
+                }
+            } else {
+                music2.pause();
+            }
+        }
+
+        function pauseSounds() {
+            rain.pause();
+            crickets.pause();
+            music.pause();
+            music2.pause();
+        }
+
+        function updateSlide() {
+            const image = document.getElementById("slide");
+            const caption = document.getElementById("caption");
+            image.src = `drawing/${currentSlide}.jpg`;
+
+            if (captions[currentSlide]) {
+                caption.textContent = captions[currentSlide].text;
+                caption.style.backgroundColor = captions[currentSlide].color;
+                caption.style.display = "flex";
+            } else {
+                caption.style.display = "none";
+            }
+
+            playSounds();  
+        }
+
+        function nextSlide() {
+            if (currentSlide === totalSlides) {
+                window.location.href = 'index.html';  
+            } else {
+                currentSlide = (currentSlide % totalSlides) + 1;
+                updateSlide();
+            }
+        }
+
+        function prevSlide() {
+            if (currentSlide === 1) {
+                window.location.href = 'index.html';  
+            } else {
+                currentSlide = (currentSlide - 2 + totalSlides) % totalSlides + 1;
+                updateSlide();
+            }
+        }
+
+        document.addEventListener("keydown", (e) => {
+            if (e.key === "ArrowRight") nextSlide();
+            if (e.key === "ArrowLeft") prevSlide();
+        });
+
+        window.onload = () => {
+            updateSlide();
+            if (isSoundOn) {
+                soundIcon.textContent = "🔊";
+                playSounds();
+            }
+        };  
+    </script>
+</body>
+</html>
+
